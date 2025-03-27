@@ -15,7 +15,6 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
         {
             Username = username;
             Password = password;
-            
         }
 
         // Phương thức ảo để đăng nhập
