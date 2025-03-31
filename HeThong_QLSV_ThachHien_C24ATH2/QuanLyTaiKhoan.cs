@@ -86,7 +86,7 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
             if (role == "GV")
             {
                 Console.Write("Nhập mã xác nhận dành cho giảng viên: ");
-                string maXacNhan = MaXacNhan();
+                string maXacNhan = NhapMaXacNhan();
 
                 if (maXacNhan != "GV123")
                 {
@@ -155,7 +155,7 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
         }
 
         // Nhập mã xác nhận ẩn dạng '*'
-        private string MaXacNhan()
+        private string NhapMaXacNhan()
         {
             string maXacNhan = "";
             ConsoleKeyInfo key;
