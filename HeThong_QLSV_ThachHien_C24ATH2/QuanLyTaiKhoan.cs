@@ -119,7 +119,6 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
             return Chu && So; // Phải có cả chữ và số
         }
 
-
         // Kiểm tra tài khoản đã tồn tại chưa
         private bool KTTK_TonTai(string username)
         {
@@ -210,6 +209,7 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                 }
             }
         }
+
         public void XemDanhSachTaiKhoan()
         {
             Console.WriteLine("\n=== DANH SÁCH TÀI KHOẢN ===");
