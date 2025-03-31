@@ -39,11 +39,11 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                 Console.Write("Nhập tên đăng nhập: ");
                 username = Console.ReadLine();
 
-                if (!KiemTraTenHopLe(username))
+                if (!KT_TenDN(username))
                 {
-                    Console.WriteLine("Tên đăng nhập không chứa khoảng trắng và ký tự đặc biệt!");
+                    Console.WriteLine("Tên đăng nhập bao gồm chữ cái và chữ số\nkhông chứa khoảng trắng và ký tự đặc biệt!");
                 }
-                else if (KiemTraTaiKhoanTonTai(username))
+                else if (KTTK_TonTai(username))
                 {
                     Console.WriteLine("Tên đăng nhập đã tồn tại!");
                 }
@@ -59,11 +59,12 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                 Console.Write("Nhập mật khẩu: ");
                 password = Console.ReadLine();
 
-                if (password.Length < 8)
+                if (!KT_MatKhau(password))
                 {
-                    Console.WriteLine("Mật khẩu chứa ít nhất 8 ký tự.");
+                    Console.WriteLine("Mật khẩu phải có ít nhất 8 ký tự\n(gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt).");
                 }
-            } while (password.Length < 8);
+
+            } while (!KT_MatKhau(password));
 
             string role;
             do
@@ -85,7 +86,7 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
             if (role == "GV")
             {
                 Console.Write("Nhập mã xác nhận dành cho giảng viên: ");
-                string maXacNhan = NhapMaXacNhan();
+                string maXacNhan = MaXacNhan();
 
                 if (maXacNhan != "GV123")
                 {
@@ -101,23 +102,26 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
         }
 
         // Kiểm tra tên đăng nhập hợp lệ (không chứa khoảng trắng & ký tự đặc biệt)
-        private bool KiemTraTenHopLe(string username)
+        private bool KT_TenDN(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
                 return false;
 
+            bool So = false, Chu = false;
+
             foreach (char c in username)
             {
-                if (!char.IsLetterOrDigit(c)) // Không phải chữ hoặc số
-                {
-                    return false;
-                }
+                if (char.IsLetter(c))  Chu = true;
+                if (char.IsDigit(c)) So = true;
+                if (!char.IsLetterOrDigit(c)) return false;
             }
-            return true;
+
+            return Chu && So; // Phải có cả chữ và số
         }
 
+
         // Kiểm tra tài khoản đã tồn tại chưa
-        private bool KiemTraTaiKhoanTonTai(string username)
+        private bool KTTK_TonTai(string username)
         {
             foreach (TaiKhoan tk in danhSachTaiKhoan)
             {
@@ -129,8 +133,29 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
             return false;
         }
 
+        private bool KT_MatKhau(string password)
+        {
+            if (password.Length < 8)
+                return false;
+
+            bool ChuHoa = false, 
+                ChuThuong = false, 
+                So = false, 
+                KyTuDB = false;
+
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c)) ChuHoa = true;
+                if (char.IsLower(c)) ChuThuong = true;
+                if (char.IsDigit(c)) So = true;
+                if (!char.IsLetterOrDigit(c)) KyTuDB = true;
+            }
+
+            return ChuHoa && ChuThuong && So && KyTuDB; // Phải chứa đủ điều kiện
+        }
+
         // Nhập mã xác nhận ẩn dạng '*'
-        private string NhapMaXacNhan()
+        private string MaXacNhan()
         {
             string maXacNhan = "";
             ConsoleKeyInfo key;
