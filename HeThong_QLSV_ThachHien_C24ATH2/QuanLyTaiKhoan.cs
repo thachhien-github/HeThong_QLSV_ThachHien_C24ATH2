@@ -213,14 +213,14 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
         public void XemDanhSachTaiKhoan()
         {
             Console.WriteLine("\n=== DANH SÁCH TÀI KHOẢN ===");
-            Console.WriteLine("==================================================");
-            Console.WriteLine($"| {"Username",-15} | {"Password",-15} | {"Role",-10} |");
-            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("============================================================");
+            Console.WriteLine($"| {"Username",-20} | {"Password",-20} | {"Role",-10} |");
+            Console.WriteLine("------------------------------------------------------------");
 
             foreach (var tk in danhSachTaiKhoan)
             {
-                Console.WriteLine($"| {tk.Username,-15} | {tk.Password,-15} | {tk.Role,-10} |");
-                Console.WriteLine("--------------------------------------------------");
+                Console.WriteLine($"| {tk.Username,-20} | {tk.Password,-20} | {tk.Role,-10} |");
+                Console.WriteLine("------------------------------------------------------------");
             }
         }
     }
