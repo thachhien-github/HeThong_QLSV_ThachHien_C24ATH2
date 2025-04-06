@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeThong_QLSV_ThachHien_C24ATH2;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HeThong_QLSV_ThachHien_C24ATH2
+namespace HeThong_quanLyTaiKhoan_ThachHien_C24ATH2
 {
     class Program
     {
@@ -116,6 +117,33 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
         }
         #endregion
 
+        #region Ẩn mật khẩu
+        static string ReadPassword()
+        {
+            string password = "";
+            ConsoleKeyInfo key;
+
+            do
+            {
+                key = Console.ReadKey(true);
+
+                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                {
+                    password += key.KeyChar;
+                    Console.Write("*");
+                }
+                else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                {
+                    password = password.Substring(0, (password.Length - 1));
+                    Console.Write("\b \b");
+                }
+            } while (key.Key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+            return password;
+        }
+        #endregion
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -126,64 +154,146 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
 
             while (true)
             {
-                TaiKhoan nguoiDung = null;
-                while (nguoiDung == null)
-                {
-                    Console.WriteLine("\n    HỆ THỐNG QUẢN LÝ SINH VIÊN");
-                    Console.WriteLine("\n=========== ĐĂNG NHẬP ===========");
-                    Console.WriteLine("| 1. Đăng nhập                  |");
-                    Console.WriteLine("| 2. Đăng ký tài khoản          |");
-                    Console.WriteLine("| 0. Thoát                      |");
-                    Console.WriteLine("=================================");
-                    Console.WriteLine("*Chú ý: nếu là sinh viên vui lòng đăng nhập với tên đăng nhập và mật khẩu là MSSV!");
-                    Console.Write("Chọn chức năng: ");
-                    string chon = Console.ReadLine();
+                Console.WriteLine("\n╔═════════════════════════════════════════╗");
+                Console.WriteLine("║       HỆ THỐNG QUẢN LÝ SINH VIÊN        ║");
+                Console.WriteLine("╠════════════ >> ĐĂNG NHẬP << ════════════╣");
+                Console.WriteLine("║  1. Đăng nhập                           ║");
+                Console.WriteLine("║  0. Thoát                               ║");
+                Console.WriteLine("╚═════════════════════════════════════════╝");
+                Console.WriteLine("* Chú ý: Nếu là sinh viên, vui lòng đăng nhập với tên đăng nhập và mật khẩu là MSSV!");
+                Console.Write("Chọn chức năng: ");
+                string chon = Console.ReadLine();
 
-                    switch (chon)
+                if (chon == "0") return;
+
+                if (chon == "1")
+                {
+                    Console.Write("Tên tài khoản: ");
+                    string username = Console.ReadLine();
+                    Console.Write("Mật khẩu: ");
+                    string password = ReadPassword();
+
+                    TaiKhoan tk = qltk.TimKiemTaiKhoan(username);
+                    if (tk != null && tk.Password == password)
                     {
-                        case "1":
-                            nguoiDung = qltk.DangNhap();
-                            break;
-                        case "2":
-                            qltk.DangKy();
-                            break;
-                        case "0":
-                            return;
-                        default:
-                            Console.Clear();
-                            Console.WriteLine("Lựa chọn không hợp lệ! Vui lòng chọn lại.");
-                            break;
+                        qltk.DangNhapTaiKhoan(tk.Username, tk.Password);
+                        switch (tk.Role)
+                        {
+                            case "Admin": MenuAdmin(qltk); break;
+                            case "GiangVien": MenuGiangVien(qlsv, qltk); break;
+                            case "SinhVien": MenuSinhVien(qlsv, qltk, username); break;
+                        }
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Sai tên đăng nhập hoặc mật khẩu!");
                     }
                 }
-
-                if (nguoiDung.Role == "GV")
+                else
                 {
-                    MenuGiangVien(qlsv, qltk);
-                }
-                else if (nguoiDung.Role == "SV")
-                {
-                    MenuSinhVien(qlsv, nguoiDung.Username);
-                    nguoiDung = null; // Reset lại để quay về màn hình đăng nhập
+                    Console.Clear();
+                    Console.WriteLine("Lựa chọn không hợp lệ");
                 }
             }
         }
-
-        #region MenuGiangVien
-        static void MenuGiangVien(QLSV qlsv, QuanLyTaiKhoan qltk)
+        #region MenuAdmin
+        static void MenuAdmin(QuanLyTaiKhoan quanLyTaiKhoan)
         {
             while (true)
             {
-                Console.WriteLine("\n      HỆ THỐNG QUẢN LÝ SINH VIÊN");
-                Console.WriteLine("\n========== CHỨC NĂNG QLSV ===========");
-                Console.WriteLine("| 1. Thêm sinh viên                 |");
-                Console.WriteLine("| 2. Xóa sinh viên                  |");
-                Console.WriteLine("| 3. Tìm kiếm sinh viên             |");
-                Console.WriteLine("| 4. Cập nhật sinh viên             |");
-                Console.WriteLine("| 5. Sắp xếp giảm dần theo điểm TB  |");
-                Console.WriteLine("| 6. Hiển thị danh sách sinh viên   |");
-                Console.WriteLine("| 7. Quản lý tài khoản              |");
-                Console.WriteLine("| 0. Đăng xuất                      |");
-                Console.WriteLine("=====================================");
+                Console.Clear();
+                Console.WriteLine("\n╔═════════════════════════════════════════════════╗");
+                Console.WriteLine("║           HỆ THỐNG QUẢN LÝ SINH VIÊN            ║");
+                Console.WriteLine("╠══════════════════ >> ADMIN << ══════════════════╣");
+                Console.WriteLine("║       === CHỨC NĂNG QUẢN LÝ TÀI KHOẢN ===       ║");
+                Console.WriteLine("║  1. Xem danh sách tài khoản                     ║");
+                Console.WriteLine("║  2. Xem lịch sử đăng nhập                       ║");
+                Console.WriteLine("║  3. Xem nhật ký hoạt động                       ║");
+                Console.WriteLine("║  4. Thêm tài khoản Giảng viên                   ║");
+                Console.WriteLine("║  5. Xóa tài khoản                               ║");
+                Console.WriteLine("║  0. Đăng xuất                                   ║");
+                Console.WriteLine("╚═════════════════════════════════════════════════╝");
+                Console.Write("Chọn chức năng: ");
+                string chon = Console.ReadLine();
+
+                switch (chon)
+                {
+                    case "1":
+                        Console.Clear();
+                        quanLyTaiKhoan.XemDanhSachTaiKhoan();
+                        break;
+
+                    case "2":
+                        Console.Clear();
+                        quanLyTaiKhoan.XemLichSuDangNhap();
+                        break;
+
+                    case "3":
+                        Console.Clear();
+                        quanLyTaiKhoan.XemNhatKyHoatDong();
+                        break;
+
+                    case "4":
+                        // Thêm tài khoản Giảng viên
+                        Console.Clear();
+                        Console.WriteLine("\n===== THÊM TÀI KHOẢN GIẢNG VIÊN =====");
+                        Console.Write("Nhập tên tài khoản (username): ");
+                        string username = Console.ReadLine();
+                        Console.Write("Nhập mật khẩu: ");
+                        string password = Console.ReadLine();
+                        string role = "GiangVien";  // Mặc định vai trò là Giảng viên
+                        TaiKhoan newAccount = new TaiKhoan(username, password, role);
+                        quanLyTaiKhoan.ThemTaiKhoan(newAccount);
+                        Console.WriteLine("Tài khoản giảng viên đã được thêm thành công!");
+                        break;
+
+                    case "5":
+                        // Xóa tài khoản
+                        Console.Clear();
+                        Console.WriteLine("\n===== XÓA TÀI KHOẢN =====");
+                        Console.Write("Nhập tên tài khoản cần xóa: ");
+                        string usernameToDelete = Console.ReadLine();
+                        quanLyTaiKhoan.XoaTaiKhoan(usernameToDelete);
+                        break;
+
+                    case "0":
+                        Console.Clear();
+                        Console.WriteLine("Đăng xuất thành công! Quay lại màn hình đăng nhập...");
+                        Thread.Sleep(1000); // Hiển thị thông báo trước khi quay lại đăng nhập
+                        return;
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Lựa chọn không hợp lệ");
+                        break;
+                }
+
+                // Thêm để dừng console và kiểm tra kết quả
+                Console.WriteLine("\nNhấn bất kỳ phím nào để quay lại menu chính...");
+                Console.ReadKey();
+            }
+        }
+        #endregion
+
+        #region MenuGiangVien
+        static void MenuGiangVien(QLSV qlsv, QuanLyTaiKhoan quanLyTaiKhoan)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("\n╔═════════════════════════════════════════════════╗");
+                Console.WriteLine("║           HỆ THỐNG QUẢN LÝ SINH VIÊN            ║");
+                Console.WriteLine("╠═══════════════ >> GIẢNG VIÊN << ════════════════╣");
+                Console.WriteLine("║       === CHỨC NĂNG QUẢN LÝ SINH VIÊN ===       ║");
+                Console.WriteLine("║  1. Thêm sinh viên                              ║");
+                Console.WriteLine("║  2. Xóa sinh viên                               ║");
+                Console.WriteLine("║  3. Tìm kiếm sinh viên                          ║");
+                Console.WriteLine("║  4. Cập nhật sinh viên                          ║");
+                Console.WriteLine("║  5. Sắp xếp giảm dần theo điểm trung bình       ║");
+                Console.WriteLine("║  6. Hiển thị danh sách sinh viên                ║");
+                Console.WriteLine("║  0. Đăng xuất                                   ║");
+                Console.WriteLine("╚═════════════════════════════════════════════════╝");
                 Console.Write("Chọn chức năng: ");
                 string chon = Console.ReadLine();
 
@@ -197,12 +307,20 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                         double diemLTHDT = NhapDiem("Điểm LTHĐT: ");
                         double diemLTWin = NhapDiem("Điểm LTWin: ");
                         Console.Clear();
-                        qlsv.ThemSV(new SinhVien(mssv, hoten)
+
+                        // Tạo sinh viên mới
+                        SinhVien sv = new SinhVien(mssv, hoten)
                         {
                             DiemTKDH = diemTKDH,
                             DiemLTHDT = diemLTHDT,
                             DiemLTWin = diemLTWin
-                        });
+                        };
+
+                        // Thêm sinh viên vào danh sách
+                        qlsv.ThemSV(sv);
+
+                        // Tạo tài khoản cho sinh viên mới (user: MSSV, pass: MSSV)
+                        quanLyTaiKhoan.ThemTaiKhoan(new TaiKhoan(mssv, mssv, "SinhVien"));
 
                         Console.WriteLine("=================================================================");
                         Console.WriteLine("|    MSSV     |       Họ Tên       |  TKĐH  |  LTHĐT  |  LTWin  |");
@@ -293,11 +411,6 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                         qlsv.XuatDanhSach();
                         break;
 
-                    case "7":
-                        Console.Clear();
-                        qltk.XemDanhSachTaiKhoan();
-                        break;
-
                     case "0":
                         Console.Clear();
                         Console.WriteLine("Đăng xuất thành công! Quay lại màn hình đăng nhập...");
@@ -309,35 +422,46 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                         Console.WriteLine("Lỗi! Vui lòng nhập số từ 0 đến 6.");
                         break;
                 }
+                // Thêm để dừng console và kiểm tra kết quả
+                Console.WriteLine("\nNhấn bất kỳ phím nào để quay lại menu chính...");
+                Console.ReadKey();
             }
         }
         #endregion
 
         #region MenuSinhVien
-        static void MenuSinhVien(QLSV qlsv, string username)
+        static void MenuSinhVien(QLSV qlsv,QuanLyTaiKhoan quanLyTaiKhoan, string username)
         {
+            SinhVien sv = qlsv.TimKiem(username);
+
             while (true)
             {
-                Console.WriteLine("\n===== TRA CỨU ĐIỂM HỌC PHẦN =====");
-                Console.WriteLine("| 1. Xem điểm trung bình        |");
-                Console.WriteLine("| 2. Xem điểm học phần          |");
-                Console.WriteLine("| 0. Đăng xuất                  |");
-                Console.WriteLine("=================================");
+                Console.Clear();
+                Console.WriteLine("\n╔═════════════════════════════════════════════╗");
+                Console.WriteLine("║         HỆ THỐNG QUẢN LÝ SINH VIÊN          ║");
+                Console.WriteLine("╠═════════════ >> SINH VIÊN << ═══════════════╣");
+                Console.WriteLine("║       === CHỨC NĂNG TRA CỨU ĐIỂM ===        ║");
+                Console.WriteLine("║  1. Xem điểm trung bình                     ║");
+                Console.WriteLine("║  2. Xem điểm học phần                       ║");
+                Console.WriteLine("║  0. Đăng xuất                               ║");
+                Console.WriteLine("╚═════════════════════════════════════════════╝");
                 Console.Write("Chọn chức năng: ");
 
                 string chon = Console.ReadLine();
-                SinhVien sv = qlsv.TimKiem(username);
+
                 switch (chon)
                 {
                     case "1":
                         if (sv != null)
                         {
                             Console.Clear();
-                            Console.WriteLine("==========================================");
-                            Console.WriteLine("|     Họ Tên       |  ĐTB   |  Xếp Loại  |");
-                            Console.WriteLine("------------------------------------------");
-                            Console.WriteLine($"| {sv.HoTen.PadRight(16).Substring(0, 16)} |{sv.DiemTrungBinh(),6:F2}  | {sv.XepLoai().PadRight(10).Substring(0, 10)} |");
-                            Console.WriteLine("==========================================");
+                            Console.WriteLine("=========================================================");
+                            Console.WriteLine("|       Họ Tên         |   ĐTB   |     Xếp Loại         |");
+                            Console.WriteLine("---------------------------------------------------------");
+                            Console.WriteLine($"| {sv.HoTen.PadRight(20).Substring(0, 20)} " +
+                                              $"|  {sv.DiemTrungBinh().ToString("F2").PadRight(5)}  " +
+                                              $"| {sv.XepLoai().PadRight(20).Substring(0, 20)} |");
+                            Console.WriteLine("=========================================================");
                         }
                         else
                         {
@@ -350,15 +474,12 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                         if (sv != null)
                         {
                             Console.Clear();
-                            Console.WriteLine("=================================================================");
-                            Console.WriteLine("|    MSSV     |       Họ Tên       |  TKĐH  |  LTHĐT  |  LTWin  |");
-                            Console.WriteLine("-----------------------------------------------------------------");
-                            Console.WriteLine($"| {sv.MSSV.PadRight(11).Substring(0, 11)} " +
-                                $"| {sv.HoTen.PadRight(18).Substring(0, 18)} " +
-                                $"|{sv.DiemTKDH,6:F2}  " +
-                                $"| {sv.DiemLTHDT,6:F2}  " +
-                                $"| {sv.DiemLTWin,6:F2}  |");
-                            Console.WriteLine("=================================================================");
+                            Console.WriteLine("=============================================================");
+                            Console.WriteLine("|    MSSV    |        Họ Tên        | TKĐH  | LTHĐT | LTWin |");
+                            Console.WriteLine("-------------------------------------------------------------");
+                            Console.WriteLine($"| {sv.MSSV.PadRight(10)} | {sv.HoTen.PadRight(20).Substring(0, 20)} " +
+                                              $"| {sv.DiemTKDH,5:F2} | {sv.DiemLTHDT,5:F2} | {sv.DiemLTWin,5:F2} |");
+                            Console.WriteLine("=============================================================");
                         }
                         else
                         {
@@ -371,13 +492,16 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
                         Console.Clear();
                         Console.WriteLine("Đăng xuất thành công! Quay lại màn hình đăng nhập...");
                         Thread.Sleep(1000); // Hiển thị thông báo trước khi quay lại đăng nhập
-                        return; // Thoát khỏi menu, quay lại màn hình đăng nhập
+                        return;
 
                     default:
                         Console.Clear();
                         Console.WriteLine("Lỗi! Vui lòng nhập số từ 0 đến 2.");
                         break;
                 }
+                // Thêm để dừng console và kiểm tra kết quả
+                Console.WriteLine("\nNhấn bất kỳ phím nào để quay lại menu chính...");
+                Console.ReadKey();
             }
         }
         #endregion

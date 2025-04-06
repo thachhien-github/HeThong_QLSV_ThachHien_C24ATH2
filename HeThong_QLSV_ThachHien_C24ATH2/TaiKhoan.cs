@@ -6,20 +6,17 @@ using System.Threading.Tasks;
 
 namespace HeThong_QLSV_ThachHien_C24ATH2
 {
-    class TaiKhoan : NguoiDung
+    class TaiKhoan
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
         public string Role { get; set; }
 
-        public TaiKhoan(string username, string password, string role)
-            : base(username, password)
+        public TaiKhoan(string maTaiKhoan, string matKhau, string vaiTro)
         {
-            Role = role;
-        }
-
-        // Ghi đè phương thức đăng nhập
-        public override void DangNhap()
-        {
-            Console.WriteLine($"{Username} ({Role}) đã đăng nhập thành công.");
+            Username = maTaiKhoan;
+            Password = matKhau;
+            Role = vaiTro;
         }
     }
 }

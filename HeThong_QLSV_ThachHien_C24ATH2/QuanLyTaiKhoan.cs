@@ -9,218 +9,143 @@ namespace HeThong_QLSV_ThachHien_C24ATH2
     class QuanLyTaiKhoan
     {
         private List<TaiKhoan> danhSachTaiKhoan = new List<TaiKhoan>();
+        private List<string> lichSuDangNhap = new List<string>();
+        private List<string> nhatKyHoatDong = new List<string>();
 
-        public TaiKhoan DangNhap()
+        public QuanLyTaiKhoan()
         {
-            Console.Write("Tên đăng nhập: ");
-            string username = Console.ReadLine();
-            Console.Write("Mật khẩu: ");
-            string password = Console.ReadLine();
-
-            foreach (TaiKhoan tk in danhSachTaiKhoan)
-            {
-                if (tk.Username == username && tk.Password == password)
-                {
-                    Console.Clear();
-                    tk.DangNhap();
-                    return tk;
-                }
-            }
-            Console.Clear();
-            Console.WriteLine("\nSai tên đăng nhập hoặc mật khẩu!");
-            return null;
-        }
-
-        public void DangKy()
-        {
-            string username;
-            do
-            {
-                Console.Write("Nhập tên đăng nhập: ");
-                username = Console.ReadLine();
-
-                if (!KT_TenDN(username))
-                {
-                    Console.WriteLine("Tên đăng nhập bao gồm chữ cái và chữ số\nkhông chứa khoảng trắng và ký tự đặc biệt!");
-                }
-                else if (KTTK_TonTai(username))
-                {
-                    Console.WriteLine("Tên đăng nhập đã tồn tại!");
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
-
-            string password;
-            do
-            {
-                Console.Write("Nhập mật khẩu: ");
-                password = Console.ReadLine();
-
-                if (!KT_MatKhau(password))
-                {
-                    Console.WriteLine("Mật khẩu phải có ít nhất 8 ký tự\n(gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt).");
-                }
-
-            } while (!KT_MatKhau(password));
-
-            string role;
-            do
-            {
-                Console.Write("Chọn vai trò (GV/SV): ");
-                role = Console.ReadLine().ToUpper();
-
-                if (role != "GV" && role != "SV")
-                {
-                    Console.WriteLine("Vai trò không hợp lệ! Chỉ nhận GV hoặc SV.");
-                }
-                else
-                {
-                    break;
-                }
-
-            } while (true);
-
-            if (role == "GV")
-            {
-                Console.Write("Nhập mã xác nhận dành cho giảng viên: ");
-                string maXacNhan = NhapMaXacNhan();
-
-                if (maXacNhan != "GV123")
-                {
-                    Console.Clear();
-                    Console.WriteLine("Mã xác nhận không đúng! Đăng ký thất bại.");
-                    return;
-                }
-            }
-
-            danhSachTaiKhoan.Add(new TaiKhoan(username, password, role));
-            Console.Clear();
-            Console.WriteLine("Đăng ký thành công!");
-        }
-
-        // Kiểm tra tên đăng nhập hợp lệ (không chứa khoảng trắng & ký tự đặc biệt)
-        private bool KT_TenDN(string username)
-        {
-            if (string.IsNullOrWhiteSpace(username))
-                return false;
-
-            bool So = false, Chu = false;
-
-            foreach (char c in username)
-            {
-                if (char.IsLetter(c))  Chu = true;
-                if (char.IsDigit(c)) So = true;
-                if (!char.IsLetterOrDigit(c)) return false;
-            }
-
-            return Chu && So; // Phải có cả chữ và số
-        }
-
-        // Kiểm tra tài khoản đã tồn tại chưa
-        private bool KTTK_TonTai(string username)
-        {
-            foreach (TaiKhoan tk in danhSachTaiKhoan)
-            {
-                if (tk.Username == username)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool KT_MatKhau(string password)
-        {
-            if (password.Length < 8)
-                return false;
-
-            bool ChuHoa = false, 
-                ChuThuong = false, 
-                So = false, 
-                KyTuDB = false;
-
-            foreach (char c in password)
-            {
-                if (char.IsUpper(c)) ChuHoa = true;
-                if (char.IsLower(c)) ChuThuong = true;
-                if (char.IsDigit(c)) So = true;
-                if (!char.IsLetterOrDigit(c)) KyTuDB = true;
-            }
-
-            return ChuHoa && ChuThuong && So && KyTuDB; // Phải chứa đủ điều kiện
-        }
-
-        // Nhập mã xác nhận ẩn dạng '*'
-        private string NhapMaXacNhan()
-        {
-            string maXacNhan = "";
-            ConsoleKeyInfo key;
-
-            while (true)
-            {
-                key = Console.ReadKey(true);
-
-                if (key.Key == ConsoleKey.Enter)
-                {
-                    break;
-                }
-                else if (key.Key == ConsoleKey.Backspace && maXacNhan.Length > 0)
-                {
-                    maXacNhan = maXacNhan.Substring(0, maXacNhan.Length - 1);
-                    Console.Write("\b \b");
-                }
-                else if (!char.IsControl(key.KeyChar))
-                {
-                    maXacNhan += key.KeyChar;
-                    Console.Write("*");
-                }
-            }
-            Console.WriteLine();
-            return maXacNhan;
+            // Thêm tài khoản Admin mặc định
+            danhSachTaiKhoan.Add(new TaiKhoan("admin", "admin123", "Admin"));
         }
 
         public void ThemTaiKhoan(TaiKhoan taiKhoan)
         {
             // Kiểm tra xem tài khoản đã tồn tại chưa
-            foreach (TaiKhoan tk in danhSachTaiKhoan)
+            if (danhSachTaiKhoan.Any(tk => tk.Username == taiKhoan.Username))
             {
-                if (tk.Username == taiKhoan.Username)
-                {
-                    return; // Nếu tồn tại, thoát phương thức mà không thêm
-                }
+                Console.WriteLine("Tài khoản đã tồn tại. Vui lòng chọn tên tài khoản khác.");
+                return;
             }
 
-            // Nếu không tìm thấy, thêm tài khoản mới
             danhSachTaiKhoan.Add(taiKhoan);
+            GhiNhanHoatDong($"Đã thêm tài khoản: {taiKhoan.Username} ({taiKhoan.Role})");
         }
 
-        public void XoaTaiKhoan(string username)
+        public void XoaTaiKhoan(string Username)
         {
-            // Duyệt danh sách để tìm tài khoản cần xóa
-            foreach (TaiKhoan tk in danhSachTaiKhoan)
+            TaiKhoan taiKhoan = danhSachTaiKhoan.Find(tk => tk.Username == Username);
+
+            if (taiKhoan != null)
             {
-                if (tk.Username == username)
+                // Hiển thị thông báo xác nhận xóa tài khoản
+                Console.WriteLine($"Bạn có chắc chắn muốn xóa tài khoản '{Username}' không? (y/n): ");
+                string confirm = Console.ReadLine().ToLower();
+
+                if (confirm == "y")
                 {
-                    danhSachTaiKhoan.Remove(tk);
-                    return; // Xóa xong thì thoát phương thức
+                    danhSachTaiKhoan.Remove(taiKhoan);
+                    GhiNhanHoatDong($"Đã xóa tài khoản: {Username}");
+                    Console.WriteLine("✅ Đã xóa tài khoản thành công.\n");
+                }
+                else
+                {
+                    Console.WriteLine("❌ Đã hủy việc xóa tài khoản.\n");
                 }
             }
+            else
+            {
+                Console.WriteLine("❌ Không tìm thấy tài khoản này.\n");
+            }
+        }
+
+        public TaiKhoan TimKiemTaiKhoan(string Username)
+        {
+            return danhSachTaiKhoan.Find(tk => tk.Username == Username);
         }
 
         public void XemDanhSachTaiKhoan()
         {
             Console.WriteLine("\n=== DANH SÁCH TÀI KHOẢN ===");
-            Console.WriteLine("============================================================");
-            Console.WriteLine($"| {"Username",-20} | {"Password",-20} | {"Role",-10} |");
-            Console.WriteLine("------------------------------------------------------------");
-
-            foreach (var tk in danhSachTaiKhoan)
+            if (danhSachTaiKhoan.Count == 0)
             {
-                Console.WriteLine($"| {tk.Username,-20} | {tk.Password,-20} | {tk.Role,-10} |");
+                Console.WriteLine("Chưa có tài khoản nào.");
+            }
+            else
+            {
+                Console.WriteLine("============================================================");
+                Console.WriteLine($"| {"Username",-20} | {"Password",-20} | {"Role",-10} |");
                 Console.WriteLine("------------------------------------------------------------");
+
+                foreach (var tk in danhSachTaiKhoan)
+                {
+                    Console.WriteLine($"| {tk.Username,-20} | {tk.Password,-20} | {tk.Role,-10} |");
+                    Console.WriteLine("------------------------------------------------------------");
+                }
+            }
+        }
+
+        public void GhiNhanDangNhap(string username)
+        {
+            string log = $"[{DateTime.Now}] Tài khoản '{username}' đã đăng nhập.";
+            lichSuDangNhap.Add(log);
+        }
+
+        public void XemLichSuDangNhap()
+        {
+            Console.WriteLine("\n=== LỊCH SỬ ĐĂNG NHẬP ===");
+            Console.WriteLine();
+            if (lichSuDangNhap.Count == 0)
+            {
+                Console.WriteLine("Chưa có lịch sử đăng nhập nào.");
+            }
+            else
+            {
+                foreach (var log in lichSuDangNhap)
+                {
+                    Console.WriteLine(log);
+                }
+            }
+        }
+
+        public void GhiNhanHoatDong(string noiDung)
+        {
+            string log = $"[{DateTime.Now}] {noiDung}";
+            nhatKyHoatDong.Add(log);
+        }
+
+        public void XemNhatKyHoatDong()
+        {
+            Console.WriteLine("\n=== NHẬT KÝ HOẠT ĐỘNG ===");
+            Console.WriteLine();
+            if (nhatKyHoatDong.Count == 0)
+            {
+                Console.WriteLine("Chưa có hoạt động nào.");
+            }
+            else
+            {
+                foreach (var log in nhatKyHoatDong)
+                {
+                    Console.WriteLine(log);
+                }
+            }
+        }
+
+        // Đăng nhập tài khoản và ghi nhận lịch sử đăng nhập
+        public bool DangNhapTaiKhoan(string username, string password)
+        {
+            TaiKhoan taiKhoan = danhSachTaiKhoan.Find(tk =>
+                tk.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+            if (taiKhoan != null && taiKhoan.Password == password)
+            {
+                Console.WriteLine($"✅ Đăng nhập thành công với tài khoản {username}.\n");
+                GhiNhanDangNhap(username); // Ghi nhận lịch sử đăng nhập
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("❌ Đăng nhập thất bại! Tài khoản hoặc mật khẩu không đúng.\n");
+                return false;
             }
         }
     }
