@@ -78,7 +78,7 @@ Mục tiêu chính là quản lý thông tin sinh viên, hỗ trợ giảng viê
 ![admin](https://drive.google.com/uc?export=view&id=1rmk6YfCDGG81B60gJG-wOnIvsdIiVogQ)
 
 > Menu Giảng viên  
-![teacher](https://drive.google.com/uc?export=view&id=1yDEn6oJueBUWK0M2BxomTe9mCEURSBUi)
+![teacher](https://drive.google.com/uc?export=view&id=1yDEn6oJueBUWK0M2BxomTe9MCEURSBUi)
 
 > Xem điểm sinh viên  
 ![student](https://drive.google.com/uc?export=view&id=1Wzdeczte1sZZIhTBQrGg-gafS5MWWl-E)
