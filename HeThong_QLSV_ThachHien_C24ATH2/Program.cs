@@ -319,9 +319,6 @@ namespace HeThong_quanLyTaiKhoan_ThachHien_C24ATH2
                         // Thêm sinh viên vào danh sách
                         qlsv.ThemSV(sv);
 
-                        // Tạo tài khoản cho sinh viên mới (user: MSSV, pass: MSSV)
-                        quanLyTaiKhoan.ThemTaiKhoan(new TaiKhoan(mssv, mssv, "SinhVien"));
-
                         Console.WriteLine("=================================================================");
                         Console.WriteLine("|    MSSV     |       Họ Tên       |  TKĐH  |  LTHĐT  |  LTWin  |");
                         Console.WriteLine("-----------------------------------------------------------------");
