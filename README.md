@@ -85,12 +85,5 @@ Mục tiêu chính là quản lý thông tin sinh viên, hỗ trợ giảng viê
 
 ---
 
-## 🔗 Dự án GitHub
-
-- 🔗 [Link repo dự án](https://github.com/thachhien-github/HeThong_QLSV_ThachHien_C24ATH2)
-- 👤 [Profile GitHub](https://github.com/thachhien-github)
-
----
-
 ## 🌐Socials
 [![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?logo=Facebook&logoColor=white)](https://facebook.com/https://www.facebook.com/Hon.Ty.739326) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/https://www.instagram.com/hon.ty.739326) [![TikTok](https://img.shields.io/badge/TikTok-%23000000.svg?logo=TikTok&logoColor=white)](https://tiktok.com/@https://www.tiktok.com/@conbebin?_t=ZS-8vKqIibbEyV&_r=1) 
