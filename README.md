@@ -56,7 +56,7 @@ Mục tiêu chính là quản lý thông tin sinh viên, hỗ trợ giảng viê
 ### 3. Quy tắc nhập liệu
 - **MSSV:** Gồm 10 chữ số, ví dụ: `2421160052`
 - **Họ tên:** Không chứa số, ký tự đặc biệt
-- **Điểm:** Nhập từ `0 - 10`, hỗ trợ `.` hoặc `,` làm dấu thập phân
+- **Điểm:** Nhập từ `0 - 10`
 
 ---
 
@@ -72,16 +72,16 @@ Mục tiêu chính là quản lý thông tin sinh viên, hỗ trợ giảng viê
 ## 📸 Hình ảnh minh họa
 
 > Giao diện đăng nhập  
-![login](./images/login.png)
+![login](https://drive.google.com/file/d/1Mv2AgtTc8jidhYH29BqaAnmdB9tu1n0w/view?usp=sharing)
 
 > Menu Admin  
-![admin](./images/admin_menu.png)
+![admin](https://drive.google.com/file/d/1rmk6YfCDGG81B60gJG-wOnIvsdIiVogQ/view?usp=sharing)
 
 > Menu Giảng viên  
-![teacher](./images/teacher_menu.png)
+![teacher](https://drive.google.com/file/d/1yDEn6oJueBUWK0M2BxomTe9MCEURSBUi/view?usp=sharing)
 
 > Xem điểm sinh viên  
-![student](./images/student_view.png)
+![student](https://drive.google.com/file/d/1Wzdeczte1sZZIhTBQrGg-gafS5MWWl-E/view?usp=sharing)
 
 ---
 
