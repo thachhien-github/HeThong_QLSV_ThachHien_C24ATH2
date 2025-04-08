@@ -75,13 +75,13 @@ Mục tiêu chính là quản lý thông tin sinh viên, hỗ trợ giảng viê
 ![login](https://drive.google.com/uc?export=view&id=1Mv2AgtTc8jidhYH29BqaAnmdB9tu1n0w)
 
 > Menu Admin  
-![admin](https://drive.google.com/file/d/1rmk6YfCDGG81B60gJG-wOnIvsdIiVogQ/view?usp=sharing)
+![admin](https://drive.google.com/uc?export=view&id=1rmk6YfCDGG81B60gJG-wOnIvsdIiVogQ)
 
 > Menu Giảng viên  
-![teacher](https://drive.google.com/file/d/1yDEn6oJueBUWK0M2BxomTe9MCEURSBUi/view?usp=sharing)
+![teacher](https://drive.google.com/uc?export=view&id=1yDEn6oJueBUWK0M2BxomTe9mCEURSBUi)
 
 > Xem điểm sinh viên  
-![student](https://drive.google.com/file/d/1Wzdeczte1sZZIhTBQrGg-gafS5MWWl-E/view?usp=sharing)
+![student](https://drive.google.com/uc?export=view&id=1Wzdeczte1sZZIhTBQrGg-gafS5MWWl-E)
 
 ---
 
