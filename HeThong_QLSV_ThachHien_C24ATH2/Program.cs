@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HeThong_quanLyTaiKhoan_ThachHien_C24ATH2
 {
-    class Program
+    class Program 
     {
         #region Phương thức chuẩn hóa họ tên
         static string ChuanHoaHoTen(string hoten)
